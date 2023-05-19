@@ -20,21 +20,24 @@ function [x] = Analysys(pattern, distance, pr_h_g_D, h1D, pack_tx_segments, Simu
         [index_window_row, index_window_col] = find(pack_tx_segments>=t_window_start & pack_tx_segments<=(t_window_start+t_window));
         index_window = [index_window_row, index_window_col];
         
-        % capturando todos os fragmentos dentro da janela
         keys = unique(index_window_row);
         pack_tx_segments_window = zeros(size(keys,1), size(pack_tx_segments,2));
         for i = 1:numel(keys)
             group_index = (index_window_row == keys(i));
-            pack = pack_tx_segments(keys(i),index_window_col(group_index));
-            
+            pack = pack_tx_segments(keys(i),index_window_col(group_index)); % capturando todos os fragmentos dentro da janela
             % ajustando size do vetor para adicionar na janela
-            pack = padarray(pack, [0, size(pack_tx_segments_window, 2) - size(pack, 2)], 'post');
-            
+            if size(pack,2) < size(pack_tx_segments_window,2)
+                pack(1,(size(pack,2)+1):size(pack_tx_segments_window,2)) = zeros(1,size(pack_tx_segments_window,2)-(size(pack,2)));
+            end
             pack_tx_segments_window(i, :) = pack;
         end
 
 
-        % incrementando delta para formação de nova janela
+
+
+%         index_window = sortrows(index_window, 1); % index de todos os nós transmitindo na mesma janela de tempo
+        
+
         t_window_start = t_window_start + delta_window;
     end
     
