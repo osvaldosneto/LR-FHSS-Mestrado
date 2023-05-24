@@ -150,7 +150,7 @@ for m=1:1:MonteCarlo
 
     %% chamando função
     [pattern, dist, pr, h] = Generate_Params(pack_tx_segments, OBW_channels, Ground_distance, k);
-    x = Analysys(pattern, dist, pr, h, pack_tx_segments, Simulation_T, 3);
+    x = Analysys(pattern, pr, pack_tx_segments, Simulation_T, 3);
     
     %% Collision analysis
     target_collided = zeros(1,size(pack_tx_segments,2));           %Collison counter for Desired signal

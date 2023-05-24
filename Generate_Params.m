@@ -15,7 +15,6 @@ function [pattern, distance, pr_h_g_D, h1D] = Generate_Params(pack_tx_segments, 
     eta = 2;                   % expoente de atenuação do caminho
     wavelength = SpeedLight/Freq_Band;
 
-
     % definimos as portadoras a serem utilizadas target_pattern
     pattern = zeros(size(pack_tx_segments));
     distance = zeros(size(pack_tx_segments,1),1)';
@@ -23,7 +22,6 @@ function [pattern, distance, pr_h_g_D, h1D] = Generate_Params(pack_tx_segments, 
     h1D = zeros(size(pack_tx_segments));
 
     for row=1:1:size(pack_tx_segments,1)
-
         %% cálculo distância entre os dispositivos e satélite
         rho = sqrt(rand(1,1)*(max(Ground_distance)^2));
         Theta = rand(1,1)*2*pi;                      
@@ -56,7 +54,6 @@ function [pattern, distance, pr_h_g_D, h1D] = Generate_Params(pack_tx_segments, 
                 end
             end
         end
-
     end
 
 end
