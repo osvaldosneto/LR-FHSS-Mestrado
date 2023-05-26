@@ -108,7 +108,7 @@ function [x] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size
                 
                 end
 
-                transmission_sim = unique(transmission_sim,'rows')
+                
 
 
                 
