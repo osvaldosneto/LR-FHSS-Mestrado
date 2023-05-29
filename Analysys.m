@@ -21,21 +21,16 @@ function [x] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size
     pattern(:,Header_size+1) = [];
     pr(:,Header_size+1) = [];
 
-    %% separando a janela de tempo detrerminada
+    %% janela de tempo determinada
     while t_window_start < Simulation_T
 
-        %% selecionando todos os nós transmitidos dentro da janela
-        [index_window_row, index_window_col] = find(pack_tx_segments>=t_window_start & pack_tx_segments<=(t_window_start+t_window));
-        index_window = [index_window_row, index_window_col];
-        keys = unique(index_window_row);
-        
-        %% capturando todos os fragmentos, portadoras e portências dentro da janela
-        pack_tx_segments_window = pack_tx_segments(keys,:);
+        % capturando todos os fragmentos, portadoras e portências dentro da janela
+        pack_tx_segments_window = pack_tx_segments;
         pack_tx_segments_window(pack_tx_segments_window <= t_window_start) = 0;
         pack_tx_segments_window(pack_tx_segments_window >= (t_window_start+t_window)) = 0;
 
-        pattern_window = (pack_tx_segments_window ~= 0) .* pattern(keys,:);
-        pr_devices = (pack_tx_segments_window ~= 0) .* pr(keys,:);
+        pattern_window = (pack_tx_segments_window ~= 0) .* pattern;
+        pr_devices = (pack_tx_segments_window ~= 0) .* pr;
         pr_I = zeros(size(pr_devices));
 
         % matrix auxiliar que armazena as colisões
@@ -45,6 +40,7 @@ function [x] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size
         %% identificando headers na trasmissão
         [hr, hc] = find(pack_tx_segments_window(:, 1:3) ~= 0);
         header_tx_window = unique(hr);
+        header_tx_window = setdiff(header_tx_window,receive_success);
 
         %% inicio da análise por pacotes tendo headers como fonte de pesquisa
         for i=1 : length(header_tx_window)
@@ -117,7 +113,6 @@ function [x] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size
         end
 
         %% análise de pacotes recebidos
-        number_of_colision = nnz(pr_I);         % armazenando o número de colisões
         pack_collided_decoded = (pr_I ~= 0);    % armazenamento da posição onde houve a colisão
         pr_devices_collided = pr_devices .* pack_collided_decoded;
 
@@ -130,10 +125,11 @@ function [x] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size
         % 0 caso contrário
         received_pack = (sir_pack_received>4 | sir_pack_received==0) .* (pack_tx_segments_window ~= 0); % multiplicando pela janela
         
-        % selecionando pacotes recebidos com sucesso
+        % selecionando pacotes recebidos com sucesso, verifica se recebeu
+        % ao menos um header e ao menos 4 fragmentos
         pack_success = find(sum(received_pack(:,1:3),2) > 0 & sum(received_pack(:,4:end),2) >= 4);
 
-        receive_success = [receive_success; keys(pack_success)];
+        receive_success = [receive_success; pack_success];
         receive_success = unique(receive_success);
 
         % removendo recebidos da análise
@@ -143,5 +139,5 @@ function [x] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size
         t_window_start = t_window_start + delta_window;
     end
     
-    x = [sum(pack_tx_segments(:,1) ~= 0), sum(pack_tx_segments(:,1) == 0)];
+    x = [length(receive_success), length(pack_tx_segments)];
 end

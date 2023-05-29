@@ -12,7 +12,7 @@ Code_Rate = 1/3;
 Header_duration = 0.233; %233 ms long headers
 F_duration = 0.05;       %50 ms payload data fragments
 Header_ToA_DR8 = Header_N_DR8*Header_duration;
-Nodes = 150;
+Nodes = 100;
 Simulation_T = 10; % 1 hour duration
 pkct_p_h = 4;      % Packets per hour per end-device
 OBW_channels=280;  % No. of OBW channels
@@ -58,7 +58,7 @@ fragment_PHY_length  = fragment_50_ms + 1;
 fragment_length = Header_N_DR8 + length(Transceiver_wait) + fragment_PHY_length;
 
 x = [];
-for i=1:1:300
+for i=1:1:50
     %% times for transmission
     First_transmit = rand(1,1)/1000;          % First transmission
     mu = (1/(Nodes*pkct_p_h)).*Simulation_T;      % inter arrival time
@@ -73,7 +73,7 @@ for i=1:1:300
     Ground_distance, k, Header_N_DR8, Header_duration, Transceiver_wait, fragment_duration);
     x = [x; Analysys(pattern, pr, pack_tx_segments, Simulation_T, 3, Last_fragment_duration)];
 end
-
+toc
 disp("final");
 
 
