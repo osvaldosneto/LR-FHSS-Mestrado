@@ -16,12 +16,12 @@ Header_duration = 0.233; %233 ms long headers
 F_duration = 0.05;       %50 ms payload data fragments
 Header_ToA_DR8 = Header_N_DR8*Header_duration;
 %Nodes = [50 60 70 80 90 100].*1e3;
-Nodes = 50;
+Nodes = 150;
 % Simulation_T = 3600; % 1 hour duration
 Simulation_T = 10; % 1 hour duration
 pkct_p_h = 4;      % Packets per hour per end-device
 OBW_channels=280;  % No. of OBW channels
-MonteCarlo = 10;    % No. of Iterations
+MonteCarlo = 1000;    % No. of Iterations
 M = 2;             % M = 2 for DR8, M=4 for DR9
 
 %% Gains and Pt are converted into linear form
@@ -147,10 +147,6 @@ for m=1:1:MonteCarlo
             end
         end 
     end
-
-    %% chamando função
-    [pattern, dist, pr, h] = Generate_Params(pack_tx_segments, OBW_channels, Ground_distance, k);
-    x = Analysys(pattern, pr, pack_tx_segments, Simulation_T, 3, Last_fragment_duration);
     
     %% Collision analysis
     target_collided = zeros(1,size(pack_tx_segments,2));           %Collison counter for Desired signal
