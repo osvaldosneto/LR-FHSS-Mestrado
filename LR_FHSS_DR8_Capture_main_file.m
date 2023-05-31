@@ -21,7 +21,7 @@ Nodes = 150;
 Simulation_T = 10; % 1 hour duration
 pkct_p_h = 4;      % Packets per hour per end-device
 OBW_channels=280;  % No. of OBW channels
-MonteCarlo = 1000;    % No. of Iterations
+MonteCarlo = 100;    % No. of Iterations
 M = 2;             % M = 2 for DR8, M=4 for DR9
 
 %% Gains and Pt are converted into linear form

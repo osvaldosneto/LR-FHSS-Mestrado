@@ -1,7 +1,7 @@
 % Função para gerar as portadoras, distâncias, potência recebida e o
 % coeficiente de desvanecimento para cada transmissão de fragmento
 
-function [pattern, pr_h_g_D, pack_tx_segments, distance] = Generate_Params(TimeStamp, ...
+function [pattern, pr_h_g_D, pack_tx_segments] = Generate_Params(TimeStamp, ...
     fragment_length, OBW_channels, Ground_distance, k, header_size, Header_duration, ...
     Transceiver_wait, fragment_duration, Nodes, pkct_p_h)
 
@@ -20,16 +20,16 @@ function [pattern, pr_h_g_D, pack_tx_segments, distance] = Generate_Params(TimeS
     pattern = zeros(Nodes*pkct_p_h,fragment_length);
     pr_h_g_D = zeros(Nodes*pkct_p_h,fragment_length);
     pack_tx_segments=zeros(Nodes*pkct_p_h,fragment_length);
-    distance = zeros(Nodes*pkct_p_h,1);
+    distance = zeros(length(TimeStamp),1);
     TimeStamp = TimeStamp';
 
 %     %% cálculo distância entre os dispositivos e satélite
-     for d=1:pkct_p_h:(Nodes*pkct_p_h-1)
+     for d=1:pkct_p_h:length(TimeStamp)-1
          rho = sqrt(rand(1,1)*(max(Ground_distance)^2));
          Theta = rand(1,1)*2*pi;                      
          Coordinates(:,1) = cos(Theta).*rho;
          Coordinates(:,2) = sin(Theta).*rho;
-         distance(d:d+pkct_p_h-1,1) = sqrt(Coordinates(:,1)^2 + Coordinates(:,2)^2)';
+         distance(d:d+pkct_p_h,1) = sqrt(Coordinates(:,1)^2 + Coordinates(:,2)^2)';
      end
 
     
