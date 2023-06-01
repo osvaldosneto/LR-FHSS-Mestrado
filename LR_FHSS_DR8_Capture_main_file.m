@@ -16,12 +16,12 @@ Header_duration = 0.233; %233 ms long headers
 F_duration = 0.05;       %50 ms payload data fragments
 Header_ToA_DR8 = Header_N_DR8*Header_duration;
 %Nodes = [50 60 70 80 90 100].*1e3;
-Nodes = 150;
-% Simulation_T = 3600; % 1 hour duration
-Simulation_T = 10; % 1 hour duration
+Nodes = 1000;
+Simulation_T = 60; % 1 hour duration
+% Simulation_T = 10; % 1 hour duration
 pkct_p_h = 4;      % Packets per hour per end-device
 OBW_channels=280;  % No. of OBW channels
-MonteCarlo = 100;    % No. of Iterations
+MonteCarlo = 500;    % No. of Iterations
 M = 2;             % M = 2 for DR8, M=4 for DR9
 
 %% Gains and Pt are converted into linear form
@@ -43,7 +43,7 @@ H = 780e3;                 %Orbital height
 %% Distance from user to satellite as function of elevation angle
 [Distance, Elevation_Angles, Ground_distance,FootPrint_R]=Satellite_Geometry(H,E);
 %X = [1 8 11 14 17 19 22 25]; %To simulate fewer points
-X = [8 11]; %To simulate fewer points
+X = [8 11 14 17 22]; %To simulate fewer points
 Distance=Distance(X);
 
 E_angles = [10 20 30 40 50 60 70 80 90];

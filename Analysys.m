@@ -2,7 +2,7 @@
 % coeficiente de desvanecimento para cada transmissão de fragmento
 
 function [receive_success] = Analysys(pattern, pr, pack_tx_segments, Simulation_T, Header_size, Last_fragment_duration)
-    t_window = 2*pack_tx_segments(1,end)-pack_tx_segments(1,1);
+    t_window = 2*(pack_tx_segments(1,end)-pack_tx_segments(1,1));
     delta_window = t_window/2;
     Header_duration = 0.233; %233 ms long headers
     F_duration = 0.05;       %50 ms payload data fragments
@@ -11,6 +11,8 @@ function [receive_success] = Analysys(pattern, pr, pack_tx_segments, Simulation_
     % pacote
     Threshold = 4;
     t_window_start = 0;
+    t_packtx_segments_end = sort(pack_tx_segments);
+    t_end = t_packtx_segments_end(end);
 
     % armazenamento dos pacotes recebidos por completo
     receive_success = [];
@@ -21,7 +23,7 @@ function [receive_success] = Analysys(pattern, pr, pack_tx_segments, Simulation_
     pr(:,Header_size+1) = [];
 
     %% janela de tempo determinada
-    while t_window_start < Simulation_T
+    while t_window_start < t_end
 
 %         % validando fim de loop
 %         loop = 1;
@@ -148,11 +150,3 @@ function [receive_success] = Analysys(pattern, pr, pack_tx_segments, Simulation_
     end
 
 end
-
-
-
-
-
-
-
-

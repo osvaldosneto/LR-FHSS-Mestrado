@@ -55,10 +55,10 @@ function [pattern, pr_h_g_D, pack_tx_segments, distance] = Generate_Params(TimeS
                 pattern(pack,frag) = 0; % não exist oprtadora twait
             else
                 dif_track=0;
-                while dif_track < 8  % 8 x 488 = 3.9 kHz spacing
+                 while dif_track < 8  % 8 x 488 = 3.9 kHz spacing
                     pattern(pack,frag) = randi(OBW_channels,1,1);
-                    dif_track=abs(pattern(pack,frag)-pattern(pack,frag-1));
-                end
+                     dif_track=abs(pattern(pack,frag)-pattern(pack,frag-1));
+                 end
             end
     
             % potência recebida para cada segmento
